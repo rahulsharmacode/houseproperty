@@ -65,16 +65,18 @@ const productPost = async (req,res) =>{
 
 const productPut = async (req,res) =>{
     try{
-        console.log('operation phase 1')
+        console.log(req.body, 'operation phase 1 update')
         let findProduct = await ProductData.findById({_id:req.params.id})
         console.log(findProduct,'operation phase 2')
 
         if(findProduct){
-            let file1 = null;
+            let file1;
             if(req.file){
                 file1 = `${process.env.UPLOADIMGURL}`+req.file.filename;
-                deletefile(findProduct.image)
+                console.log(file1 , '==========file1=========')
+               if(findProduct.image) {deletefile(findProduct.image);} 
             }
+            console.log(file1 , '==========file1 p2=========')
 
             findProduct.title = req.body.title || findProduct.title;
             findProduct.address = req.body.address || findProduct.address;
@@ -86,7 +88,7 @@ const productPut = async (req,res) =>{
             res.status(200).json({status:true , message : `updation success`});
         }
         else{
-            res.status(400).json({status:true , message : `product not found`});
+            res.status(400).json({status:false , message : `product not found`});
         }
     }
     catch(err){
@@ -109,6 +111,36 @@ const productDelete = async (req,res) =>{
     }
 }
 
+const searchGet = async (req,res) =>{
+    try{
 
-module.exports = {productGet,productPost,productPut,productDelete}
+        // const searchProduct = await ProductData.aggregate([
+        //     {
+        //         $match : {
+        //              $and:  [req.body]
+                     
+        //         }
+        //     } 
+        // ])
+
+        const searchProduct = await ProductData.find({
+            $and:  [req.body]
+        })
+      
+        if(searchProduct){
+            res.status(200).json({status:true, message:'success' , data : searchProduct})
+        }
+        else{
+            res.status(400).json({status:false, message:'failed'})
+
+        }
+
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+
+module.exports = {productGet,productPost,productPut,productDelete,searchGet}
 

@@ -14,9 +14,12 @@ const adminLogin = async (req,res) =>{
                     let token = await findAdmin.generateAuthToken();
                     res.status(200).json({status:true, message : `login success` , token:token})
                 }
+                else{
+                  return  res.status(406).json({status:false, message : `account details didn't match`})
+                }
             }   
             else{
-                res.status(404).json({status:false, message : `account details didn't match`})
+                return  res.status(404).json({status:false, message : `account details didn't match`})
             }
         }
     }

@@ -3,7 +3,7 @@ const multer = require('multer');
 const authentication = require('../authentication/authentication');
 const { adminLogin, adminRegister } = require('../controller/adminController');
 const { homeGet, homePost, homePut } = require('../controller/homeController');
-const { productGet, productPost, productPut, productDelete } = require('../controller/productsController');
+const { productGet, productPost, productPut, productDelete, searchGet } = require('../controller/productsController');
 const { locationGet, locationPost, locationPut, locationDelete, productTypeGet, productTypePost, productTypePut, productTypeDelete, productRangeGet, productRangePost, productRangePut, productRangeDelete } = require('../controller/productsPropsContoller');
 const userRouter = new express.Router();
 
@@ -60,6 +60,9 @@ userRouter.get('/api/products' , productGet);
 userRouter.post('/api/products',upload.single('product_image') , authentication , productPost);
 userRouter.put('/api/products/:id',upload.single('product_image') , authentication , productPut);
 userRouter.delete('/api/products/:id' , authentication , productDelete);
+
+userRouter.post('/api/search' , searchGet);
+
 
 
 
