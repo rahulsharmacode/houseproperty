@@ -6,7 +6,7 @@ const app =  express();
 require('./db/config')
 const userRouter = require('./router/userRouter')
 
-
+app.use(cors());
 app.use(express.static('./public'))
 app.use(express.json())
 app.use(userRouter);
@@ -14,7 +14,7 @@ app.use(userRouter);
 //     origin : "http://localhost:3000"
 // }))
 
-app.use(cors());
+
 
 
 app.get('/' , (req,res)=>{
